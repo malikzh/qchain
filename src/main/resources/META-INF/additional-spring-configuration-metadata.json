@@ -9,6 +9,11 @@
       "name": "qchain.data-path",
       "type": "java.lang.String",
       "description": "Путь куда будут складываться настройки QChain."
+    },
+    {
+      "name": "qchain.max-pool-size",
+      "type": "java.lang.Integer",
+      "description": "Максимальное количество транзакций в пуле транзакций."
     }
   ]
 }

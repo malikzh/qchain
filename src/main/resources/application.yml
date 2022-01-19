@@ -1,5 +1,6 @@
 qchain:
     data-path: qchain_data
+    max-pool-size: 1000
 springdoc:
     paths-to-match: /qchain/api/**
 logging:
