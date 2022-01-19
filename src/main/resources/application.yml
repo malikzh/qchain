@@ -1,0 +1,10 @@
+qchain:
+    data-path: qchain_data
+springdoc:
+    paths-to-match: /qchain/api/**
+logging:
+    level:
+        io.github.malikzh.qchain: DEBUG
+server:
+  error:
+      include-message: always

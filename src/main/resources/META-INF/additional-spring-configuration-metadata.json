@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "qchain",
+      "type": "java.lang.String",
+      "description": "Настройки QChain."
+    },
+    {
+      "name": "qchain.data-path",
+      "type": "java.lang.String",
+      "description": "Путь куда будут складываться настройки QChain."
+    }
+  ]
+}

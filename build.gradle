@@ -1,0 +1,43 @@
+plugins {
+    id 'org.springframework.boot' version '2.6.2'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+}
+
+group = 'io.github.malikzh'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation group: 'org.iq80.leveldb', name: 'leveldb', version: '0.12'
+    implementation name: 'commons-logging-1.1.1'
+    implementation name: 'kalkancrypt-0.6.1'
+    implementation name: 'kalkancrypt_xmldsig-0.3'
+    implementation name: 'knca_provider_util-0.7.1'
+    implementation name: 'xmlsec-1.5.8'
+    implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.4'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+    useJUnitPlatform()
+}
