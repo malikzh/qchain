@@ -34,9 +34,13 @@ public abstract class LevelDbRepository {
         // db path
         String path = Paths.get(System.getProperty("user.dir"), properties.getDataPath(), getDbName()).toString();
 
-        log.info("Creating '{}' database at: {}", getDbName(), path);
+        log.info("Opening '{}' database at: {}", getDbName(), path);
         db = factory.open(new File(path), options);
-        db.put(bytes(DB_SIZE_KEY), bytes("0"));
+
+        if (db.get(bytes(DB_SIZE_KEY)) == null) {
+            log.info("Initializing '{}' database", getDbName());
+            db.put(bytes(DB_SIZE_KEY), bytes("0"));
+        }
     }
 
     protected void setSize(WriteBatch batch, Integer size) {
@@ -52,5 +56,35 @@ public abstract class LevelDbRepository {
     private void destroy() {
         log.info("Closing '{}' database...", getDbName());
         db.close();
+    }
+
+    @SneakyThrows
+    public void save(byte[] key, String xml) {
+        try (WriteBatch batch = db.createWriteBatch()) {
+            batch.put(key, bytes(xml));
+
+            if (db.get(key) != null) {
+                setSize(batch, getSize() + 1);
+            }
+
+            db.write(batch);
+        }
+    }
+
+    public String find(byte[] key) {
+        return asString(db.get(key));
+    }
+
+    @SneakyThrows
+    public void delete(byte[] key) {
+        try (WriteBatch batch = db.createWriteBatch()) {
+            if (db.get(key) != null) {
+                setSize(batch, getSize() - 1);
+            }
+
+            batch.delete(key);
+
+            db.write(batch);
+        }
     }
 }

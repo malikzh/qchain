@@ -18,7 +18,7 @@ public class MiningService {
 
     @Scheduled(cron = "* * * * * *")
     private void generateBlock() {
-        poolRepository.size();
+        log.debug("DB Size: {}", poolRepository.getSize());
 
         log.debug("Mining new block...");
     }
