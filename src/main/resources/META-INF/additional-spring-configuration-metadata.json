@@ -20,7 +20,6 @@
       "type": "java.util.List<java.lang.String>",
       "description": "Список начальных узлов для синхронизации."
     },
-    ,
     {
       "name": "qchain.create-genesis-block",
       "type": "java.lang.Boolean",
