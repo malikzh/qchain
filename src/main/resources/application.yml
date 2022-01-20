@@ -11,6 +11,10 @@ qchain:
 
     # Если true, то будет создан genesis block (начальный блок)
     create-genesis-block: false
+
+    # Хост на котором запущена БД
+    host: http://localhost:8080
+
 springdoc:
     paths-to-match: /qchain/api/**
 logging:

@@ -24,6 +24,11 @@
       "name": "qchain.create-genesis-block",
       "type": "java.lang.Boolean",
       "description": "Создавать ли начальный блок?."
+    },
+    {
+      "name": "qchain.host",
+      "type": "java.lang.String",
+      "description": "Текущий хост"
     }
   ]
 }

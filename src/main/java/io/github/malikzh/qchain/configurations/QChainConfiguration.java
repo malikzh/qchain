@@ -21,4 +21,7 @@ public class QChainConfiguration {
 
     // Создавать ли начальный блок
     private Boolean createGenesisBlock;
+
+    // Хост
+    private String host;
 }

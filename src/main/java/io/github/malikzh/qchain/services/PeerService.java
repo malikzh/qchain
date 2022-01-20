@@ -2,6 +2,7 @@ package io.github.malikzh.qchain.services;
 
 import io.github.malikzh.qchain.configurations.QChainConfiguration;
 import io.github.malikzh.qchain.repositories.StateRepository;
+import io.github.malikzh.qchain.utils.Util;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,9 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static io.github.malikzh.qchain.utils.Util.isCorrectUrl;
+import static io.github.malikzh.qchain.utils.Util.isLocalAddress;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +32,10 @@ public class PeerService {
 
         current.addAll(peers.stream()
                 .map(String::toLowerCase)
+                .filter((peer) -> !peer.isBlank()
+                        && !isLocalAddress(peer)
+                        && !peer.equals(config.getHost().toLowerCase())
+                        && isCorrectUrl(peer))
                 .collect(Collectors.toSet()));
 
         state.setPeers(current);
@@ -60,6 +68,7 @@ public class PeerService {
         }
 
         peers = peers.stream()
+                .filter(Util::isCorrectUrl)
                 .map(String::toLowerCase)
                 .collect(Collectors.toSet());
 
