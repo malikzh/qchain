@@ -13,7 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Set;
 
 @RestController
-@RequestMapping(path = "qchain/api/peers")
+@RequestMapping(path = "qchain/api/v1/peers")
 @RequiredArgsConstructor
 @Tag(name = "Peer", description = "Методы для работы с синхронизацией списков пиров")
 public class PeerContoller {

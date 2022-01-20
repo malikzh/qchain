@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(path = "qchain/api/transactions")
+@RequestMapping(path = "qchain/api/v1/transactions")
 @RequiredArgsConstructor
 @Tag(name = "Transaction", description = "Методы для работы с транзакциями")
 public class TransactionController {
