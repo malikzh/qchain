@@ -8,6 +8,8 @@ import lombok.SneakyThrows;
 
 import java.util.List;
 
+import static io.github.malikzh.qchain.utils.Util.sha256;
+
 @Data
 @Builder
 public class Block {
@@ -34,5 +36,10 @@ public class Block {
         var mapper = new ObjectMapper();
 
         return mapper.writeValueAsBytes(this);
+    }
+
+    @SneakyThrows
+    public byte[] calculateHash() {
+        return sha256(this.toJson());
     }
 }

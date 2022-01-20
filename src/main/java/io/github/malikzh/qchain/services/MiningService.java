@@ -70,13 +70,12 @@ public class MiningService {
                     .timestamp(LocalDateTime.now().toString())
                     .nonce(nonce)
                     .transactions(transactions)
-                    .build()
-                    .toJson();
+                    .build();
 
-            var blockHash = sha256(block);
+            var blockHash = block.calculateHash();
 
             if (blockHash[0] == 0x00) {
-                blockchain.save(blockHash, block);
+                blockchain.save(blockHash, block.toJson());
 
                 // Удаляем транзакции, которые попали в блок
                 transactions.forEach((item) -> pool.delete(sha256(item)));
@@ -101,12 +100,11 @@ public class MiningService {
                 .timestamp(LocalDateTime.now().toString())
                 .nonce(0)
                 .transactions(new ArrayList<>())
-                .build()
-                .toJson();
+                .build();
 
-        var hash = sha256(genesisBlock);
+        var hash = genesisBlock.calculateHash();
 
-        blockchain.save(hash, genesisBlock);
+        blockchain.save(hash, genesisBlock.toJson());
         log.info("First block saved with hash: {}", Hex.encodeStr(hash));
     }
 }
