@@ -1,5 +1,6 @@
 package io.github.malikzh.qchain.services;
 
+import io.github.malikzh.qchain.configurations.QChainConfiguration;
 import io.github.malikzh.qchain.enums.BlockVersion;
 import io.github.malikzh.qchain.models.Block;
 import io.github.malikzh.qchain.repositories.BlockchainRepository;
@@ -28,6 +29,7 @@ import static io.github.malikzh.qchain.utils.Util.sha256;
 public class MiningService {
     private final PoolRepository pool;
     private final BlockchainRepository blockchain;
+    private final QChainConfiguration config;
 
     @Scheduled(cron = "0 * * * * *")
     private void generateBlock() {
@@ -42,6 +44,11 @@ public class MiningService {
 
         // Создаем  genesis block
         if (Objects.isNull(lastBlockHash)) {
+            if (!config.getCreateGenesisBlock()) {
+                log.info("Wait for genesis block from another nodes...");
+                return;
+            }
+
             generateFirstBlock();
             return;
         }
