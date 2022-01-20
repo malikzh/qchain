@@ -1,6 +1,6 @@
 package io.github.malikzh.qchain.controllers;
 
-import io.github.malikzh.qchain.models.Transaction;
+import io.github.malikzh.qchain.responses.TransactionCreateResponse;
 import io.github.malikzh.qchain.services.TransactionPoolService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -30,7 +30,8 @@ public class TransactionController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(tags = "transaction", summary = "Добавляет транзакцию в пул для дальнейшей обработки. " +
             "Транзакция - это подписанный XML (при помощи библиотеки kalkancrypt), содержащий определённые данные.")
-    public ResponseEntity<Transaction> add(@RequestBody String xml) {
-        return new ResponseEntity<>(transactionPoolService.add(xml), HttpStatus.CREATED);
+    public ResponseEntity<TransactionCreateResponse> add(@RequestBody String xml) {
+        return new ResponseEntity<>(TransactionCreateResponse.builder()
+                .hash(transactionPoolService.add(xml)).build(), HttpStatus.CREATED);
     }
 }

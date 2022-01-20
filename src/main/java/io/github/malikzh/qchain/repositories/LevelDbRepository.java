@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.iq80.leveldb.DB;
 import org.iq80.leveldb.Options;
 import org.iq80.leveldb.WriteBatch;
+import org.springframework.lang.NonNull;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -59,9 +60,19 @@ public abstract class LevelDbRepository {
     }
 
     @SneakyThrows
-    public void save(byte[] key, String xml) {
-        try (WriteBatch batch = db.createWriteBatch()) {
-            batch.put(key, bytes(xml));
+    public void save(byte[] key, String value) {
+        save(key, bytes(value), db.createWriteBatch());
+    }
+
+    @SneakyThrows
+    public void save(byte[] key, byte[] value) {
+        save(key, value, db.createWriteBatch());
+    }
+
+    @SneakyThrows
+    protected void save(byte[] key, byte[] value, @NonNull WriteBatch batch) {
+        try (batch) {
+            batch.put(key, value);
 
             if (db.get(key) != null) {
                 setSize(batch, getSize() + 1);

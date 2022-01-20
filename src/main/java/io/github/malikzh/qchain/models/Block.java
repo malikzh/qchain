@@ -1,12 +1,15 @@
 package io.github.malikzh.qchain.models;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.malikzh.qchain.enums.BlockVersion;
+import lombok.Builder;
 import lombok.Data;
+import lombok.SneakyThrows;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
+@Builder
 public class Block {
     // Версия блока
     private BlockVersion version;
@@ -18,11 +21,18 @@ public class Block {
     private byte[] merkleRoot;
 
     // Дата создания блока
-    private LocalDateTime timestamp;
+    private String timestamp;
 
     // Нонс
     private long nonce;
 
     // Отсортированный список транзакций
     private List<Transaction> transactions;
+
+    @SneakyThrows
+    public byte[] toJson() {
+        var mapper = new ObjectMapper();
+
+        return mapper.writeValueAsBytes(this);
+    }
 }

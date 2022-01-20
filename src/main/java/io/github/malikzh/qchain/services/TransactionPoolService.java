@@ -2,8 +2,8 @@ package io.github.malikzh.qchain.services;
 
 import io.github.malikzh.qchain.configurations.QChainConfiguration;
 import io.github.malikzh.qchain.exceptions.TransactionPoolException;
-import io.github.malikzh.qchain.models.Transaction;
 import io.github.malikzh.qchain.repositories.PoolRepository;
+import kz.gov.pki.kalkan.util.encoders.Hex;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,7 +30,7 @@ public class TransactionPoolService {
      * @param xml
      * @return
      */
-    public Transaction add(String xml) throws TransactionPoolException {
+    public String add(String xml) throws TransactionPoolException {
         var key = sha256(xml);
 
         if (configuration.getMaxPoolSize() > 0 && repository.getSize() >= configuration.getMaxPoolSize()) {
@@ -43,6 +43,6 @@ public class TransactionPoolService {
 
         repository.save(key, xml);
 
-        return null;
+        return Hex.encodeStr(key);
     }
 }
