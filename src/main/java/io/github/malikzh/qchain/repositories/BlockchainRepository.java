@@ -1,6 +1,9 @@
 package io.github.malikzh.qchain.repositories;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.malikzh.qchain.configurations.QChainConfiguration;
+import io.github.malikzh.qchain.models.Block;
+import lombok.SneakyThrows;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
@@ -8,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Arrays;
 import java.util.Objects;
 
+import static io.github.malikzh.qchain.utils.Constants.ZERO_HASH;
 import static org.iq80.leveldb.impl.Iq80DBFactory.bytes;
 
 @Repository
@@ -33,10 +37,11 @@ public class BlockchainRepository extends LevelDbRepository {
     }
 
     /**
-     * Возвращает глубину до блока
+     * Возвращает глубину до необходимого блока
      * @param blockHash Хэш блока, до которого надо дойти
      * @return Глубина до блока, если блок не найден с соответствующим хэшем, то возвращается -1
      */
+    @SneakyThrows
     public @NonNull Integer getDepthTo(byte[] blockHash) {
         var last = getLastBlockHash();
 
@@ -48,8 +53,23 @@ public class BlockchainRepository extends LevelDbRepository {
             return 0;
         }
 
-        // todo
-        return 0;
+        var mapper = new ObjectMapper();
+
+        var depth = 0;
+
+        while (!Arrays.equals(last, blockHash)) {
+            Block block = mapper.readValue(find((last)), Block.class);
+
+            if (Objects.isNull(block) || Objects.isNull(block.getPrevBlockHash()) ||
+                    Arrays.equals(block.getPrevBlockHash(), ZERO_HASH)) {
+                return -1;
+            }
+
+            last = block.getPrevBlockHash();
+            ++depth;
+        }
+
+        return depth;
     }
 
     @Override
