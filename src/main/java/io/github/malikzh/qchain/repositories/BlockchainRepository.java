@@ -8,8 +8,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 
-import java.util.Arrays;
-import java.util.Objects;
+import java.util.*;
 
 import static io.github.malikzh.qchain.utils.Constants.ZERO_HASH;
 import static org.iq80.leveldb.impl.Iq80DBFactory.bytes;
@@ -70,6 +69,52 @@ public class BlockchainRepository extends LevelDbRepository {
         }
 
         return depth;
+    }
+
+    @SneakyThrows
+    public List<Block> getBlocksFromTop(Integer max) {
+        List<Block> blocks = new ArrayList<>();
+
+        var last = getLastBlockHash();
+
+        if (Objects.isNull(last)) {
+            return null;
+        }
+
+        var mapper = new ObjectMapper();
+
+        for (int i=0; i<max; ++i) {
+            Block block = mapper.readValue(find(last), Block.class);
+
+            if (Objects.isNull(block)) {
+                break;
+            }
+
+            blocks.add(block);
+
+            if (Objects.isNull(block.getPrevBlockHash()) || Arrays.equals(block.getPrevBlockHash(), ZERO_HASH)) {
+                break;
+            }
+
+            last = block.getPrevBlockHash();
+        }
+
+        Collections.reverse(blocks);
+
+        return blocks;
+    }
+
+    @SneakyThrows
+    public Block findBlock(byte[] hash) {
+        var raw = db.get(hash);
+
+        if (Objects.isNull(raw)) {
+            return null;
+        }
+
+        var mapper = new ObjectMapper();
+
+        return mapper.readValue(raw, Block.class);
     }
 
     @Override

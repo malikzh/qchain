@@ -6,6 +6,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 public class Util {
     @SneakyThrows
@@ -37,5 +39,14 @@ public class Util {
         } catch (MalformedURLException e) {
             return false;
         }
+    }
+
+    public static LocalDateTime parseLocalDateTime(String localDateTime) {
+        ZonedDateTime zonedDateTime = ZonedDateTime.parse(localDateTime);
+        return zonedDateTime.toLocalDateTime();
+    }
+
+    public static int getRandomNumber(int min, int max) {
+        return (int) ((Math.random() * (max - min)) + min);
     }
 }
