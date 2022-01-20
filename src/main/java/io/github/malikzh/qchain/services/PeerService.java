@@ -7,9 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +19,32 @@ public class PeerService {
     private final StateRepository state;
     private final QChainConfiguration config;
 
+    /**
+     * Регистрация новых пиров
+     * @param peers
+     */
+    public void add(Set<String> peers) {
+        Set<String> current = config.getPeers();
+
+        current.addAll(peers.stream()
+                .map(String::toLowerCase)
+                .collect(Collectors.toSet()));
+
+        state.setPeers(current);
+    }
+
+    /**
+     * Возвращает множество всех пиров
+     *
+     * @return
+     */
+    public Set<String> getAll() {
+        return state.getPeers();
+    }
+
+    /**
+     * Инициализация таблицы пиров
+     */
     @PostConstruct
     private void initialize() {
         if (Objects.nonNull(state.getPeers())) {
@@ -26,14 +53,19 @@ public class PeerService {
 
         log.info("Creating peers table...");
 
-        List<String> peers = new ArrayList<String>();
+        Set<String> peers = new HashSet<>();
 
         if (config.getPeers() != null ) {
             peers = config.getPeers();
         }
 
-        log.info("Added {} to peers table.", peers);
+        peers = peers.stream()
+                .map(String::toLowerCase)
+                .collect(Collectors.toSet());
 
         state.setPeers(peers);
+
+
+        log.info("Added {} to peers table.", peers);
     }
 }

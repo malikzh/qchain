@@ -4,7 +4,7 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
+import java.util.Set;
 
 @Configuration
 @ConfigurationProperties("qchain")
@@ -17,7 +17,7 @@ public class QChainConfiguration {
     private Integer maxPoolSize;
 
     // Список узлов для обмена блоками
-    private List<String> peers;
+    private Set<String> peers;
 
     // Создавать ли начальный блок
     private Boolean createGenesisBlock;

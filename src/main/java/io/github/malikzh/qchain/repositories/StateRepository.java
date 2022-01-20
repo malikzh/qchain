@@ -5,8 +5,8 @@ import io.github.malikzh.qchain.configurations.QChainConfiguration;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import static org.iq80.leveldb.impl.Iq80DBFactory.bytes;
 
@@ -28,7 +28,7 @@ public class StateRepository extends LevelDbRepository {
     }
 
     @SneakyThrows
-    public List<String> getPeers() {
+    public Set<String> getPeers() {
         var om = new ObjectMapper();
         var raw = find(bytes(PEERS_KEY));
 
@@ -36,11 +36,11 @@ public class StateRepository extends LevelDbRepository {
             return null;
         }
 
-        return om.readValue(raw, List.class);
+        return om.readValue(raw, Set.class);
     }
 
     @SneakyThrows
-    public void setPeers(List<String> peers) {
+    public void setPeers(Set<String> peers) {
         var om = new ObjectMapper();
         save(bytes(PEERS_KEY), om.writeValueAsBytes(peers));
     }
