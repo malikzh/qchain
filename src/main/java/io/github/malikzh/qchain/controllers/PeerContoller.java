@@ -33,7 +33,7 @@ public class PeerContoller {
     }
 
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(tags = "transaction", summary = "Возвращает список пиров")
+    @Operation(tags = "peer", summary = "Возвращает список пиров")
     public Set<String> getAll() {
         return peerService.getAll();
     }
