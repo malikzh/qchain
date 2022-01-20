@@ -5,6 +5,7 @@ import io.github.malikzh.qchain.repositories.StateRepository;
 import io.github.malikzh.qchain.utils.Util;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -76,5 +77,14 @@ public class PeerService {
 
 
         log.info("Added {} to peers table.", peers);
+    }
+
+    /**
+     * Задача для обмена пирами с другими нодами каждые 10 минут
+     */
+    @Scheduled(fixedRate = 60000 * 10, initialDelay = 0)
+    private void exchange() {
+        // todo
+        log.warn("Peer exchange not implemented");
     }
 }
