@@ -74,7 +74,7 @@ public abstract class LevelDbRepository {
         try (batch) {
             batch.put(key, value);
 
-            if (db.get(key) != null) {
+            if (db.get(key) == null) {
                 setSize(batch, getSize() + 1);
             }
 

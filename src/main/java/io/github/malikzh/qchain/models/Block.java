@@ -27,7 +27,7 @@ public class Block {
     private long nonce;
 
     // Отсортированный список транзакций
-    private List<Transaction> transactions;
+    private List<byte[]> transactions;
 
     @SneakyThrows
     public byte[] toJson() {
