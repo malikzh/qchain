@@ -1,6 +1,16 @@
 qchain:
+    # Путь к папки с данными
     data-path: qchain_data
+
+    # Максимальный размер пула транзакций
     max-pool-size: 1000
+
+    # Узлы для обмена информацией
+    peers:
+        - 'http://194.61.3.50:8032'
+
+    # Если true, то будет создан genesis block (начальный блок)
+    create-genesis-block: false
 springdoc:
     paths-to-match: /qchain/api/**
 logging:
