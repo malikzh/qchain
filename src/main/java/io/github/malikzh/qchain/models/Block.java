@@ -2,16 +2,14 @@ package io.github.malikzh.qchain.models;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.malikzh.qchain.enums.BlockVersion;
-import lombok.Builder;
-import lombok.Data;
-import lombok.SneakyThrows;
+import lombok.*;
 
 import java.util.List;
 
 import static io.github.malikzh.qchain.utils.Util.sha256;
 
 @Data
-@Builder
+@NoArgsConstructor
 public class Block {
     // Версия блока
     private BlockVersion version;

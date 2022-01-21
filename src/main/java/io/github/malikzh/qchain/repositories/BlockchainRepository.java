@@ -117,6 +117,39 @@ public class BlockchainRepository extends LevelDbRepository {
         return mapper.readValue(raw, Block.class);
     }
 
+    @SneakyThrows
+    public List<byte[]> getAllBlocksHashes() {
+        var last = getLastBlockHash();
+
+        if (Objects.isNull(last)) {
+            return new ArrayList<>();
+        }
+
+        var mapper = new ObjectMapper();
+        var blocks = new ArrayList<byte[]>();
+
+        while (true) {
+            Block block = mapper.readValue(find((last)), Block.class);
+
+            if (Objects.isNull(block)) {
+                break;
+            }
+
+            blocks.add(block.calculateHash());
+
+            if (Objects.isNull(block.getPrevBlockHash()) ||
+                    Arrays.equals(block.getPrevBlockHash(), ZERO_HASH)) {
+                break;
+            }
+
+            last = block.getPrevBlockHash();
+        }
+
+        Collections.reverse(blocks);
+
+        return blocks;
+    }
+
     @Override
     public void save(byte[] key, byte[] value) {
         var batch = db.createWriteBatch();

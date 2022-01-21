@@ -63,14 +63,13 @@ public class MiningService {
 
         // Подбираем nonce
         for (long nonce = 0L; nonce < Long.MAX_VALUE; ++nonce) {
-            var block = Block.builder()
-                    .version(BlockVersion.VERSION_1_0)
-                    .prevBlockHash(lastBlockHash)
-                    .merkleRoot(ZERO_HASH) // todo
-                    .timestamp(LocalDateTime.now().toString())
-                    .nonce(nonce)
-                    .transactions(transactions)
-                    .build();
+            var block = new Block();
+            block.setVersion(BlockVersion.VERSION_1_0);
+            block.setPrevBlockHash(lastBlockHash);
+            block.setMerkleRoot(ZERO_HASH); // todo
+            block.setTimestamp(LocalDateTime.now().toString());
+            block.setNonce(nonce);
+            block.setTransactions(transactions);
 
             var blockHash = block.calculateHash();
 
@@ -93,14 +92,13 @@ public class MiningService {
     private void generateFirstBlock() {
         log.info("Generating first block...");
 
-        var genesisBlock = Block.builder()
-                .version(BlockVersion.VERSION_1_0)
-                .prevBlockHash(ZERO_HASH)
-                .merkleRoot(ZERO_HASH)
-                .timestamp(LocalDateTime.now().toString())
-                .nonce(0)
-                .transactions(new ArrayList<>())
-                .build();
+        var genesisBlock = new Block();
+        genesisBlock.setVersion(BlockVersion.VERSION_1_0);
+        genesisBlock.setPrevBlockHash(ZERO_HASH);
+        genesisBlock.setMerkleRoot(ZERO_HASH);
+        genesisBlock.setTimestamp(LocalDateTime.now().toString());
+        genesisBlock.setNonce(0);
+        genesisBlock.setTransactions(new ArrayList<>());
 
         var hash = genesisBlock.calculateHash();
 
