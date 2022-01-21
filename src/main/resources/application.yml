@@ -10,7 +10,7 @@ qchain:
         - 'http://194.61.3.50:8032'
 
     # Если true, то будет создан genesis block (начальный блок)
-    create-genesis-block: false
+    create-genesis-block: true
 
     # Хост на котором запущена БД
     host: http://localhost:8080
